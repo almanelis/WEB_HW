@@ -7,18 +7,61 @@
         содержит необходимую информацию. При наведении курсора на div с class="features-content" сделайте так, чтобы <div class="content-hide" ></div>
         показывался, а когда уводили курор, то блок с class="features-content" становился предыдущих размеров. 
 
-        P.S. Нормально, если при наведении на див с class="features-content" он становится оранжевым - это можно не фиксить
+        P.S. Нормально, если при наведении на див с class="features-content" он становится оранжевым - это можно не фиксить*/
+const FeatureContent = document.querySelectorAll('.features-content');
+const ContentHide = document.querySelectorAll('.content-hide');
 
-    2.  На втором экране вы видите табы:
+FeatureContent.forEach((firstBlock, index) => {
+    firstBlock.addEventListener('mouseover', () => {
+        ContentHide[index].style.display = 'block';
+    });
+
+    firstBlock.addEventListener('mouseout', () => {
+        ContentHide[index].style.display = 'none';
+    });
+});
+    /*2.  На втором экране вы видите табы:
         а) Best Education
         б) Top Managemen
         в) Quality Meeting
         При нажатии на каждый из этих табов (квадратик или название) сайтик должен показывать соответствующий блок информации
         с нужной фотографией, описанием и заголовком.
 
-        P.S. Сейчас показаны все блоки с описанием
+        P.S. Сейчас показаны все блоки с описанием*/
+        
+// добавил следующие css свойства
+// .tabs-content article {
+//   display: none;
+// }
 
-    3. На третьем экране есть отсчёт обратного времени. Сделайте так, чтобы обратный отсчёт был в режиме реального времени (посекундно).
+const tabsMenu = document.querySelectorAll('.tabs-menu a');
+const tabsContent = document.querySelectorAll('.tabs-content article');
+
+// Показать текущий таб при загрузке страницы
+tabsContent[0].style.display = 'block';
+document.querySelector('.tabs-menu .ui-tabs-active a').parentNode.classList.add('ui-tabs-active');
+
+tabsMenu.forEach((tabMenuLink, index) => {
+  tabMenuLink.addEventListener('click', function (event) {
+      event.preventDefault();
+
+      // Скрыть все табы
+      tabsContent.forEach(tabContent => {
+          tabContent.style.display = 'none';
+      });
+
+      // Показать текущий таб
+      tabsContent[index].style.display = 'block';
+
+      // Удалить активный класс с неактивной кнопки
+      document.querySelector('.ui-tabs-active a').parentNode.classList.remove('ui-tabs-active');
+
+      // Добавить активный класс текущему пункту меню
+      this.parentNode.classList.add('ui-tabs-active');
+  });
+});
+
+    /*3. На третьем экране есть отсчёт обратного времени. Сделайте так, чтобы обратный отсчёт был в режиме реального времени (посекундно).
     В качестве дедлайна (крайней даты) возьмите 31.12.2023
 
     P.S. Подсказка - в 22_js уроке в проекте Food разбирается, как работать со счётчиком

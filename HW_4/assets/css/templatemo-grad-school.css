@@ -15,6 +15,10 @@ body {
 
 /* Basic */
 
+.tabs-content article {
+  display: none;
+}
+
 a {
 	color: #3CF;
     text-decoration: none;
