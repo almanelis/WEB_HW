@@ -64,15 +64,46 @@ tabsMenu.forEach((tabMenuLink, index) => {
     /*3. На третьем экране есть отсчёт обратного времени. Сделайте так, чтобы обратный отсчёт был в режиме реального времени (посекундно).
     В качестве дедлайна (крайней даты) возьмите 31.12.2023
 
-    P.S. Подсказка - в 22_js уроке в проекте Food разбирается, как работать со счётчиком
+    P.S. Подсказка - в 22_js уроке в проекте Food разбирается, как работать со счётчиком*/
+const targetDate = new Date('2023-12-31');
 
-    4.  На 4-ом экране есть 5 карточек, заполненные информацией. Сделайте так, чтобы верстка подтягивалась и вставлялась в HTML документа
-        из JS, а именно из массива coursesMass. Это значит, в самом HTML не должно быть верстки (вам нужно будет удалить),
-        и она должна вставляться только через JS
+const countdownElements = {
+    days: document.querySelector('.days .value'),
+    hours: document.querySelector('.hours .value'),
+    minutes: document.querySelector('.minutes .value'),
+    seconds: document.querySelector('.seconds .value'),
+};
 
-*/
+const updateCountdown = () => {
+    const currentDate = new Date();
+    const timeDiff = targetDate.getTime() - currentDate.getTime();
 
-// Задание 4
+    if (timeDiff > 0) {
+        const days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+        countdownElements.days.textContent = days < 10 ? '0' + days : days;
+
+        const hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        countdownElements.hours.textContent = hours < 10 ? '0' + hours : hours;
+
+        const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+        countdownElements.minutes.textContent = minutes < 10 ? '0' + minutes : minutes;
+
+        const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
+        countdownElements.seconds.textContent = seconds < 10 ? '0' + seconds : seconds;
+    } else {
+        countdownElements.days.textContent = '00';
+        countdownElements.hours.textContent = '00';
+        countdownElements.minutes.textContent = '00';
+        countdownElements.seconds.textContent = '00';
+    }
+};
+
+setInterval(updateCountdown, 1000);
+/*4.  На 4-ом экране есть 5 карточек, заполненные информацией. Сделайте так, чтобы верстка подтягивалась и вставлялась в HTML документа
+из JS, а именно из массива coursesMass. Это значит, в самом HTML не должно быть верстки (вам нужно будет удалить),
+и она должна вставляться только через JS*/
+
+// были ошибки в названии элементов в объекте 
 const coursesMass = [
   {
     cardImg: {
@@ -89,7 +120,7 @@ const coursesMass = [
   },
   {
     cardImg: {
-      src: 'ssets/images/courses-02.jpg',
+      src: 'assets/images/courses-02.jpg',
       alt: 'Course #2',
     },
     header: 'Business World',
@@ -102,7 +133,7 @@ const coursesMass = [
   },
   {
     cardImg: {
-      src: 'ssets/images/courses-03.jpg',
+      src: 'assets/images/courses-03.jpg',
       alt: 'Course #3',
     },
     header: 'Media Technology',
@@ -115,7 +146,7 @@ const coursesMass = [
   },
   {
     cardImg: {
-      src: 'ssets/images/courses-04.jpg',
+      src: 'assets/images/courses-04.jpg',
       alt: 'Course #4',
     },
     header: 'Communications',
@@ -128,7 +159,7 @@ const coursesMass = [
   },
   {
     cardImg: {
-      src: 'ssets/images/courses-05.jpg',
+      src: 'assets/images/courses-05.jpg',
       alt: 'Course #5',
     },
     header: 'Business Ethics',
@@ -140,3 +171,36 @@ const coursesMass = [
     },
   },
 ]
+
+function formatCourses(courses) {
+  return courses.map((course) => {
+    return `
+      <div class="carousel__item">
+        <img src="${course.cardImg.src}" alt="${course.cardImg.alt}">
+        <div class="carousel__content">
+          <h4>${course.header}</h4>
+          <p>${course.descr}</p>
+          <div class="item__last-row">
+            <img src="${course.authorImg.src}" alt="${course.authorImg.alt}">
+            <div class="text-button-pay">
+              <a href="#">Pay <i class="fa fa-angle-double-right"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function insertAdjacentHTML(selector, position, html) {
+  const targetElement = document.querySelector(selector);
+  targetElement.insertAdjacentHTML(position, html);
+}
+
+function insertCourses() {
+  const formattedCourses = formatCourses(coursesMass);
+  const targetSelector = '.carousel__wrapper'; // Замените '.target-selector' на селектор элемента, в который вы хотите вставить HTML-код
+  insertAdjacentHTML(targetSelector, 'afterbegin', formattedCourses); // 'afterbegin' - вставляет HTML-код перед первым ребенком элемента; измените на 'beforeend' для вставки после последнего ребенка элемента
+}
+
+document.addEventListener('DOMContentLoaded', insertCourses);
