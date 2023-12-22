@@ -199,8 +199,8 @@ function insertAdjacentHTML(selector, position, html) {
 
 function insertCourses() {
   const formattedCourses = formatCourses(coursesMass);
-  const targetSelector = '.carousel__wrapper'; // Замените '.target-selector' на селектор элемента, в который вы хотите вставить HTML-код
-  insertAdjacentHTML(targetSelector, 'afterbegin', formattedCourses); // 'afterbegin' - вставляет HTML-код перед первым ребенком элемента; измените на 'beforeend' для вставки после последнего ребенка элемента
+  const targetSelector = '.carousel__wrapper'; 
+  insertAdjacentHTML(targetSelector, 'afterbegin', formattedCourses); 
 }
 
 document.addEventListener('DOMContentLoaded', insertCourses);
